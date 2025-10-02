@@ -1,0 +1,20 @@
+title: OpenVPN Manager
+description: Small Rust CLI to manage OpenVPN (v2) and OpenVPN3
+# Use a GitHub Pages-supported theme for simplicity
+# See: https://pages.github.com/themes/
+# Using the Cayman theme
+theme: jekyll-theme-cayman
+
+# Do not process or publish build artifacts and non-site content
+exclude:
+  - target
+  - _site
+  - .github
+  - Cargo.lock
+  - Cargo.toml
+  - LICENSE
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+
+markdown: kramdown
