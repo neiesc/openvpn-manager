@@ -1,6 +1,6 @@
 use std::env;
 use std::process::{Command, exit};
-use std::io::{self, BufReader, BufRead};
+use std::io::{BufReader, BufRead};
 
 // Função para exibir a mensagem de uso e sair
 fn print_usage_and_exit(program_name: &str) {
