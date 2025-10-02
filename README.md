@@ -2,7 +2,9 @@
 
 ## Installation
 
-- `cargo install openvpn_manager`
+- cargo: `cargo install openvpn_manager`
+- Arch Linux (AUR): `yay -S openvpn-manager-git` (or `paru -S openvpn-manager-git`)
+  - AUR page: https://aur.archlinux.org/packages/openvpn-manager-git
 
 ## Usage
 
