@@ -1,6 +1,6 @@
 use std::env;
-use std::process::{Command, exit};
-use std::io::{BufReader, BufRead};
+use std::io::{BufRead, BufReader};
+use std::process::{exit, Command};
 
 // Função para exibir a mensagem de uso e sair
 fn print_usage_and_exit(program_name: &str) {
@@ -143,11 +143,9 @@ fn main() {
                     Err(e) => eprintln!("Erro ao desconectar sessão {}: {}", session, e),
                 }
             }
-
         } else {
             print_usage_and_exit(program_name);
         }
-
     } else {
         // Versão inválida
         print_usage_and_exit(program_name);
