@@ -1,13 +1,17 @@
 # openvpn manager
+## Installation
+- `cargo install openvpn_manager`
+
 ## Usage
 ### openvpn3
-- `cargo run -- 3 start file.ovpn`
-- `cargo run -- 3 stop file.ovpn`
+- `openvpn_manager 3 start file.ovpn`
+- `openvpn_manager 3 stop file.ovpn`
 
 ### openvpn (version 2)
-- `sudo cargo run -- 2 start file.ovpn` # only start in this version
+- `openvpn_manager 2 start file.ovpn` # only start in this version
 
 ## TODO
+- [ ] Add tests
  - [ ] Blackground process for openvpn (version 2)
    - [ ] Imprement stop comand
  - [ ] Publish
@@ -19,3 +23,6 @@
 
 ## Contribution
 Welcome
+### Development
+#### Commands
+- `sudo cargo run -- 2 start file.ovpn` # only start in this version
