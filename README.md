@@ -26,7 +26,7 @@
     - [ ] Publish Crate to Crates.io
     - [ ] Publish in AUR (Arch)
 - [ ] Implement command `myip` to show actual ip public
-- [ ] Implement command `status` to show actual status (connect to vpn or not)
+- [x] Implement command `status` to show actual status (connect to vpn or not)
 - [ ] Implement command `ping` to show ping (this is a wrapper command to `ping google.com`), maybe
 
 ## Contribution
