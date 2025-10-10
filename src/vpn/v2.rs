@@ -14,7 +14,7 @@ fn start(config: &str) -> anyhow::Result<()> {
     let mut child = std::process::Command::new("openvpn")
         .args(["--config", config])
         .spawn()?;
-    std::mem::forget(child);
+    // Dropping the child handle allows the process to run in the background.
     println!("OpenVPN 2 started (background).");
     Ok(())
 }
