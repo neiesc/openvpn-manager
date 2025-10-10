@@ -30,9 +30,9 @@ fn status(_config: &str) -> anyhow::Result<()> {
         .arg("openvpn")
         .output()?;
     if out.status.success() {
-        println!("✅  openvpn appears to be running.");
+        println!("✅ openvpn appears to be running.");
     } else {
-        println!("❌  no openvpn process found.");
+        println!("❌ no openvpn process found.");
     }
     Ok(())
 }
