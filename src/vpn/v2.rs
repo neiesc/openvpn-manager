@@ -11,10 +11,10 @@ pub fn handle(args: &Args) -> anyhow::Result<()> {
 
 fn start(config: &str) -> anyhow::Result<()> {
     println!("Starting OpenVPN 2 with {}", config);
-    let mut child = std::process::Command::new("openvpn")
+    std::process::Command::new("openvpn")
         .args(["--config", config])
         .spawn()?;
-    // Dropping the child handle allows the process to run in the background.
+
     println!("OpenVPN 2 started (background).");
     Ok(())
 }
