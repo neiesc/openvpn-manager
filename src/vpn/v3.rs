@@ -83,7 +83,7 @@ fn status(config: &str) -> anyhow::Result<()> {
     if active.is_empty() {
         println!("❌ No active VPN.");
     } else {
-        println!("Active: {:?}", active);
+        println!("Active: {}", active.join(", "));
     }
 
     if connected {
