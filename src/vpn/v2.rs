@@ -11,9 +11,10 @@ pub fn handle(args: &Args) -> anyhow::Result<()> {
 
 fn start(config: &str) -> anyhow::Result<()> {
     println!("Starting OpenVPN 2 with {}", config);
-    std::process::Command::new("openvpn")
+    let mut child = std::process::Command::new("openvpn")
         .args(["--config", config])
         .spawn()?;
+    child.forget();
     println!("OpenVPN 2 started (background).");
     Ok(())
 }
