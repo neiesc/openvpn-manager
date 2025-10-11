@@ -1,6 +1,6 @@
 [package]
 name = "openvpn_manager"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 
 description = "Command-line tool to manage OpenVPN 2.x and OpenVPN 3 sessions (start/stop, with more commands planned)."
