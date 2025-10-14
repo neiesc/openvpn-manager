@@ -18,10 +18,10 @@ pub enum Command {
 #[command(author, version, about = "Wrapper for OpenVPN 2/3")]
 pub struct Args {
     #[arg(value_enum)]
-    pub open_vpn_version: OpenVpnVersion,
-
-    #[arg(value_enum)]
     pub command: Command,
 
+    #[arg(value_enum)]
+    pub open_vpn_version: OpenVpnVersion,
+    
     pub vpn_config: String,
 }
