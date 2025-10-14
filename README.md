@@ -23,7 +23,7 @@
 ## TODO
 
 - [ ] Background process for openvpn (for version 2)
-    - [ ] Implement stop command for (for version 2)
+    - [ ] Implement stop command for version 2
 - [x] Publish
     - [x] Publish Crate to Crates.io
     - [x] Publish in AUR (Arch)
