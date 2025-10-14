@@ -1,11 +1,11 @@
 [package]
-name = "openvpn_manager"
-version = "0.1.1"
+name = "openvpn-manager"
+version = "0.1.2"
 edition = "2024"
 
-description = "Command-line tool to manage OpenVPN 2.x and OpenVPN 3 sessions (start/stop, with more commands planned)."
-homepage = "https://github.com/neiesc/openvpn_manager"
-repository = "https://github.com/neiesc/openvpn_manager"
+description = "Command-line tool to manage OpenVPN 2.x and OpenVPN 3.x (start/stop VPN and more commands)."
+homepage = "https://neiesc.github.io/openvpn-manager"
+repository = "https://github.com/neiesc/openvpn-manager"
 readme = "README.md"
 license-file = "LICENSE"
 
