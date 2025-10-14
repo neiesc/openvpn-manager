@@ -1,9 +1,9 @@
-# openvpn manager
+# OpenVPN Manager
 
 ## Installation
 
 - cargo: `cargo install openvpn-manager`
-  - crates.io page: https://crates.io/crates/openvpn_manager
+  - crates.io page: https://crates.io/crates/openvpn-manager
 - Arch Linux (AUR): like `paru -S openvpn-manager-git`
   - AUR page: https://aur.archlinux.org/packages/openvpn-manager-git
 
@@ -11,18 +11,19 @@
 
 ### openvpn3
 
-- `openvpn-manager 3 start file.ovpn`
-- `openvpn-manager 3 stop file.ovpn`
+- `openvpn-manager start 3 file.ovpn`
+- `openvpn-manager stop 3 file.ovpn`
+- `openvpn-manager status 3 file.ovpn`
 
 ### openvpn (version 2)
 
-- `openvpn-manager 2 start file.ovpn` # only start in this version
+- `openvpn-manager start 2 file.ovpn` # only start/status in this version
+- `openvpn-manager status 2`
 
 ## TODO
 
-- [ ] Add tests
-- [ ] Background process for openvpn (version 2)
-    - [ ] Implement stop command
+- [ ] Background process for openvpn (for version 2)
+    - [ ] Implement stop command for version 2
 - [x] Publish
     - [x] Publish Crate to Crates.io
     - [x] Publish in AUR (Arch)
@@ -32,7 +33,7 @@
 
 ## Contribution
 
-Welcome
+Everyone is welcome.
 
 ### Development
 
