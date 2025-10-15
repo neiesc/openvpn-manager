@@ -1,32 +1,58 @@
-use crate::cli::Args;
+use std::borrow::Cow;
+use std::io;
+use std::io::Write;
+use crate::{
+    cli::{Args, Command},
+    util::run_cmd,
+};
+use std::process::{Command as SysCmd, Stdio};
 
 pub fn handle(args: &Args) -> anyhow::Result<()> {
     match args.command {
-        crate::cli::Command::Start => start(&args.vpn_config)?,
-        crate::cli::Command::Stop => stop(&args.vpn_config)?,
-        crate::cli::Command::Status => status(&args.vpn_config)?,
+        Command::Start => start(&args.vpn_config)?,
+        Command::Stop => todo!(),
+        Command::Restart => todo!(),
+        Command::Status => status(&args.vpn_config)?,
     }
     Ok(())
 }
 
 fn start(config: &str) -> anyhow::Result<()> {
     println!("Starting OpenVPN 2 with {}", config);
-    std::process::Command::new("openvpn")
+    print!("Username: ");
+    io::stdout().flush()?;
+    let mut username = String::new();
+    io::stdin().read_line(&mut username)?;
+    let username = username.trim_end();
+    let password = rpassword::prompt_password("Password: ")?;
+    let password = password.trim_end();
+
+    let mut child = SysCmd::new("openvpn")
         .args(["--config", config])
+        .stdin(Stdio::piped())
+        .stdout(Stdio::inherit())
+        .stderr(Stdio::inherit())
         .spawn()?;
 
-    println!("OpenVPN 2 started (background).");
+    if let Some(mut stdin) = child.stdin.take() {
+        use std::io::Write as _;
+        writeln!(stdin, "auth-user-pass")?;
+        writeln!(stdin, "{}", username)?;
+        writeln!(stdin, "{}", password)?;
+    }
+
+    println!("OpenVPN 2 started (background).\nNote: if your config doesn’t use auth-user-pass, credentials may be ignored.");
     Ok(())
 }
 
 fn stop(_config: &str) -> anyhow::Result<()> {
-    // todo: stop specific openvpn2 process
+    // TODO: stop specific openvpn2 process
     println!("Stopping OpenVPN 2 not yet implemented.");
     Ok(())
 }
 
 fn status(_config: &str) -> anyhow::Result<()> {
-    let out = std::process::Command::new("pgrep")
+    let out = SysCmd::new("pgrep")
         .arg("openvpn")
         .output()?;
     if out.status.success() {

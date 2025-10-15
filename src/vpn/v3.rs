@@ -1,3 +1,4 @@
+use std::borrow::Cow;
 use crate::{
     cli::{Args, Command},
     util::run_cmd,
@@ -9,6 +10,7 @@ pub fn handle(args: &Args) -> anyhow::Result<()> {
         Command::Start => start(&args.vpn_config)?,
         Command::Stop => stop(&args.vpn_config)?,
         Command::Status => status(&args.vpn_config)?,
+        Command::Restart => todo!(),
     }
     Ok(())
 }
@@ -21,24 +23,7 @@ fn start(config: &str) -> anyhow::Result<()> {
 fn stop(config: &str) -> anyhow::Result<()> {
     let output = SysCmd::new("openvpn3").arg("sessions-list").output()?;
     let text = String::from_utf8_lossy(&output.stdout);
-    let mut current_path: Option<String> = None;
-    let mut to_disconnect = Vec::new();
-
-    for line in text.lines() {
-        if let Some((key, val)) = line.split_once(':') {
-            let key = key.trim();
-            let val = val.trim();
-            match key {
-                "Path" => current_path = Some(val.to_string()),
-                "Config name" if val == config => {
-                    if let Some(path) = current_path.take() {
-                        to_disconnect.push(path);
-                    }
-                }
-                _ => {}
-            }
-        }
-    }
+    let (to_disconnect, connected) = getCurrenActive(config, text);
 
     if to_disconnect.is_empty() {
         println!("No session found for {}", config);
@@ -55,10 +40,31 @@ fn stop(config: &str) -> anyhow::Result<()> {
 }
 
 fn status(config: &str) -> anyhow::Result<()> {
-    let output = SysCmd::new("openvpn3").arg("sessions-list").output()?;
+    let output = SysCmd::new("openvpn3")
+        .arg("sessions-list")
+        .output()?;
     let text = String::from_utf8_lossy(&output.stdout);
-    let mut active = Vec::new();
+    let (path, connected) = getCurrenActive(config, text);
+
+    if path.is_empty() {
+        println!("❌ No active VPN.");
+    } else {
+        println!("Active: {:?}", path);
+    }
+
+    if connected {
+        println!("✅ {:?} is connected.", config);
+    } else {
+        println!("❌ {:?} is not connected.", config);
+    }
+
+    Ok(())
+}
+
+fn getCurrenActive(config: &str, text: Cow<str>) -> (Vec<String>, bool) {
+    let mut path = Vec::new();
     let mut current_name: Option<String> = None;
+    let mut current_path: Option<String> = None;
     let mut connected = false;
 
     for line in text.lines() {
@@ -66,10 +72,11 @@ fn status(config: &str) -> anyhow::Result<()> {
             let k = k.trim();
             let v = v.trim();
             match k {
-                "Config name" => current_name = Some(v.to_string()),
-                "Status" if v == "Connected" => {
+                "Config name" => current_name = Some(v.to_string().replace("  (Config not available)", "")),
+                "Path" => current_path = Some(v.to_string()),
+                "Status" if v == "Connection, Client connected" => {
                     if let Some(name) = &current_name {
-                        active.push(name.clone());
+                        path.push(current_path.clone().unwrap());
                         if name == config {
                             connected = true;
                         }
@@ -80,17 +87,5 @@ fn status(config: &str) -> anyhow::Result<()> {
         }
     }
 
-    if active.is_empty() {
-        println!("❌ No active VPN.");
-    } else {
-        println!("Active: {}", active.join(", "));
-    }
-
-    if connected {
-        println!("✅ {} is connected.", config);
-    } else {
-        println!("❌ {} is not connected.", config);
-    }
-
-    Ok(())
+    (path, connected)
 }
