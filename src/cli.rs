@@ -13,6 +13,7 @@ pub enum Command {
     Stop,
     Restart,
     Status,
+    MyIp,
 }
 
 #[derive(Parser)]
@@ -24,5 +25,5 @@ pub struct Args {
     #[arg(value_enum)]
     pub open_vpn_version: OpenVpnVersion,
 
-    pub vpn_config: String,
+    pub vpn_config:  String,
 }
