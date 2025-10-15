@@ -35,7 +35,6 @@ fn start(config: &str) -> anyhow::Result<()> {
         .spawn()?;
 
     if let Some(mut stdin) = child.stdin.take() {
-        use std::io::Write as _;
         writeln!(stdin, "auth-user-pass")?;
         writeln!(stdin, "{}", username)?;
         writeln!(stdin, "{}", password)?;
