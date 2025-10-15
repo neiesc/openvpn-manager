@@ -18,7 +18,10 @@
 ### openvpn (version 2)
 
 - `openvpn-manager start 2 file.ovpn` # only start/status in this version
+- `openvpn-manager start 2 file.ovpn --auth-file credentials.txt` # with username/password authentication
 - `openvpn-manager status 2`
+
+For services like NordVPN that require authentication, create a credentials file with your username on the first line and password on the second line, then use the `--auth-file` option.
 
 ## TODO
 
@@ -39,4 +42,5 @@ Everyone is welcome.
 
 #### Commands
 
-- `sudo cargo run -- 2 start file.ovpn` # only start in this version
+- `sudo cargo run -- start 2 file.ovpn` # only start in this version
+- `sudo cargo run -- start 2 file.ovpn --auth-file credentials.txt` # with authentication

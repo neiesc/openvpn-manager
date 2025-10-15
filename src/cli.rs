@@ -24,4 +24,8 @@ pub struct Args {
     pub open_vpn_version: OpenVpnVersion,
     
     pub vpn_config: String,
+
+    /// Path to authentication file (username/password) for OpenVPN 2
+    #[arg(long = "auth-file")]
+    pub auth_file: Option<String>,
 }
