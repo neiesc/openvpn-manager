@@ -1,18 +1,15 @@
-use std::borrow::Cow;
 use std::io;
 use std::io::Write;
 use crate::{
     cli::{Args, Command},
-    util::run_cmd,
 };
 use std::process::{Command as SysCmd, Stdio};
 
 pub fn handle(args: &Args) -> anyhow::Result<()> {
     match args.command {
         Command::Start => start(&args.vpn_config)?,
-        Command::Stop => todo!(),
-        Command::Restart => todo!(),
         Command::Status => status(&args.vpn_config)?,
+        _ => todo!()
     }
     Ok(())
 }
@@ -41,12 +38,6 @@ fn start(config: &str) -> anyhow::Result<()> {
     }
 
     println!("OpenVPN 2 started (background).\nNote: if your config doesn’t use auth-user-pass, credentials may be ignored.");
-    Ok(())
-}
-
-fn stop(_config: &str) -> anyhow::Result<()> {
-    // TODO: stop specific openvpn2 process
-    println!("Stopping OpenVPN 2 not yet implemented.");
     Ok(())
 }
 

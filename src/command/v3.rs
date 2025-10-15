@@ -10,7 +10,7 @@ pub fn handle(args: &Args) -> anyhow::Result<()> {
         Command::Start => start(&args.vpn_config)?,
         Command::Stop => stop(&args.vpn_config)?,
         Command::Status => status(&args.vpn_config)?,
-        Command::Restart => todo!(),
+        _ => todo!()
     }
     Ok(())
 }
@@ -23,7 +23,7 @@ fn start(config: &str) -> anyhow::Result<()> {
 fn stop(config: &str) -> anyhow::Result<()> {
     let output = SysCmd::new("openvpn3").arg("sessions-list").output()?;
     let text = String::from_utf8_lossy(&output.stdout);
-    let (to_disconnect, connected) = getCurrenActive(config, text);
+    let (to_disconnect, _) = get_current_active(config, text);
 
     if to_disconnect.is_empty() {
         println!("No session found for {}", config);
@@ -44,7 +44,7 @@ fn status(config: &str) -> anyhow::Result<()> {
         .arg("sessions-list")
         .output()?;
     let text = String::from_utf8_lossy(&output.stdout);
-    let (path, connected) = getCurrenActive(config, text);
+    let (path, connected) = get_current_active(config, text);
 
     if path.is_empty() {
         println!("❌ No active VPN.");
@@ -61,7 +61,7 @@ fn status(config: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn getCurrenActive(config: &str, text: Cow<str>) -> (Vec<String>, bool) {
+fn get_current_active(config: &str, text: Cow<str>) -> (Vec<String>, bool) {
     let mut path = Vec::new();
     let mut current_name: Option<String> = None;
     let mut current_path: Option<String> = None;
