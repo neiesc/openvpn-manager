@@ -40,7 +40,7 @@ fn start(config: &str) -> anyhow::Result<()> {
         }
     });
 
-    let status = SysCmd::new("sudo")
+    let _status = SysCmd::new("sudo")
         .arg("openvpn")
         .arg("--config").arg(config)
         .arg("--auth-user-pass").arg(fifo)
