@@ -40,4 +40,4 @@ Everyone is welcome.
 
 #### Commands
 
-- `sudo cargo run -- 2 start file.ovpn` # only start in this version
+- `sudo cargo run -- start 2 file.ovpn` # only start in this version
