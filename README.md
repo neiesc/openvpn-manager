@@ -27,7 +27,7 @@
 - [x] Publish
     - [x] Publish Crate to Crates.io
     - [x] Publish in AUR (Arch)
-- [ ] Implement command `myip` to show actual ip public
+- [x] Implement command `myip` to show actual ip public
 - [x] Implement command `status` to show actual status (connect to vpn or not)
 - [ ] Implement command `ping` to show ping (this is a wrapper command to `ping google.com`), maybe
 - [ ] Implement command `restart` to execute `stop` and `start`.
