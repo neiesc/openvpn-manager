@@ -24,20 +24,33 @@ fn start(config: &str) -> anyhow::Result<()> {
     let password = rpassword::prompt_password("Password: ")?;
     let password = password.trim_end();
 
-    let mut child = SysCmd::new("openvpn")
-        .args(["--config", config])
-        .stdin(Stdio::piped())
-        .stdout(Stdio::inherit())
-        .stderr(Stdio::inherit())
-        .spawn()?;
+    let fifo = "/tmp/openvpn_auth.fifo";
+    let _ = std::fs::remove_file(fifo);
+    let status_mk = SysCmd::new("mkfifo").arg(fifo).status()?;
+    assert!(status_mk.success(), "mkfifo falhou");
 
-    if let Some(mut stdin) = child.stdin.take() {
-        writeln!(stdin, "auth-user-pass")?;
-        writeln!(stdin, "{}", username)?;
-        writeln!(stdin, "{}", password)?;
-    }
+    let writer = std::thread::spawn({
+        let user = username.to_string();
+        let pass = password.to_string();
+        move || -> io::Result<()> {
+            let mut f = std::fs::OpenOptions::new().write(true).open(fifo)?;
+            writeln!(f, "{user}")?;
+            writeln!(f, "{pass}")?;
+            Ok(())
+        }
+    });
 
-    println!("OpenVPN 2 started (background).\nNote: if your config doesn’t use auth-user-pass, credentials may be ignored.");
+    let status = SysCmd::new("sudo")
+        .arg("openvpn")
+        .arg("--config").arg(config)
+        .arg("--auth-user-pass").arg(fifo)
+        .stdin(Stdio::null())
+        .status()?;
+
+    let _ = writer.join();
+    let _ = std::fs::remove_file(fifo);
+
+    println!("OpenVPN 2 started.\nNote: if your config doesn’t use auth-user-pass, credentials may be ignored.");
     Ok(())
 }
 
